@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd"
+                     objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="1" author="omaima">
+        <createTable tableName="member">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_demand"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="nationality" type="VARCHAR(255)"/>
+            <column name="identity_number" type="VARCHAR(255)"/>
+            <column name="access_date" type="DATE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="omaima">
+        <createTable tableName="competition">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_demand"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="location" type="VARCHAR(255)"/>
+            <column name="participants_num" type="BIGINT"/>
+            <column name="date" type="DATE"/>
+            <column name="start_time" type="TIME"/>
+            <column name="end_time" type="TIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="omaima">
+        <createTable tableName="ranking">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_demand"/>
+            </column>
+            <column name="rank" type="BIGINT"/>
+            <column name="score" type="BIGINT"/>
+            <column name="member_id" type="BIGINT"/>
+            <column name="competition_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="omaima">
+        <createTable tableName="level">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_demand"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="code" type="BIGINT"/>
+            <column name="points" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="5" author="omaima">
+        <createTable tableName="fish">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_demand"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="avg_weight" type="BIGINT"/>
+            <column name="level_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="6" author="omaima">
+        <createTable tableName="hunting">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_demand"/>
+            </column>
+            <column name="fish_num" type="BIGINT"/>
+            <column name="fish_id" type="BIGINT"/>
+            <column name="competition_id" type="BIGINT"/>
+            <column name="member_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="7" author="omaima">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="ranking" constraintName="FK_RANKING_ON_MEMBER"
+                                 referencedColumnNames="id" referencedTableName="member"/>
+    </changeSet>
+    <changeSet id="8" author="omaima">
+        <addForeignKeyConstraint baseColumnNames="competition_id" baseTableName="ranking" constraintName="FK_RANKING_ON_COMPETITION"
+                                 referencedColumnNames="id" referencedTableName="competition"/>
+    </changeSet>
+    <changeSet id="9" author="omaima">
+        <addForeignKeyConstraint baseColumnNames="competition_id" baseTableName="hunting" constraintName="FK_HUNTING_ON_COMPETITION"
+                                 referencedColumnNames="id" referencedTableName="competition"/>
+    </changeSet>
+    <changeSet id="10" author="omaima">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="hunting" constraintName="FK_HUNTING_ON_MEMBER"
+                                 referencedColumnNames="id" referencedTableName="member"/>
+    </changeSet>
+    <changeSet id="11" author="omaima">
+        <addForeignKeyConstraint baseColumnNames="fish_id" baseTableName="hunting" constraintName="FK_HUNTING_ON_FISH"
+                                 referencedColumnNames="id" referencedTableName="fish"/>
+    </changeSet>
+    <changeSet id="12" author="omaima">
+        <addForeignKeyConstraint baseColumnNames="level_id" baseTableName="fish" constraintName="FK_FISH_ON_LEVEL"
+                                 referencedColumnNames="id" referencedTableName="level"/>
+    </changeSet>
+</databaseChangeLog>
