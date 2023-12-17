@@ -3,6 +3,7 @@ import com.example.aftas.dto.MemberDto;
 import com.example.aftas.entities.Member;
 import com.example.aftas.repositories.MemberRepository;
 import com.example.aftas.services.MemberService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +25,13 @@ public class MemberController {
     public Member find(@PathVariable Long id){return this.memberService.find(id);}
 
     @PostMapping("")
-    public Member add(@RequestBody MemberDto memberDto){
+    public Member add(@Valid @RequestBody MemberDto memberDto){
         Member member = modelMapper.map(memberDto, Member.class);
         return this.memberService.save(member);
     }
 
     @PutMapping("/{id}")
-    public Member update(@PathVariable Long id, @RequestBody MemberDto memberDto){
+    public Member update(@PathVariable Long id,@Valid @RequestBody MemberDto memberDto){
         Member member = modelMapper.map(memberDto, Member.class);
         member.setId(id);
         return this.memberService.save(member);

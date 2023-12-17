@@ -5,6 +5,9 @@ import com.example.aftas.entities.Competition;
 import com.example.aftas.repositories.CompetitionRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,6 +16,18 @@ public class CompetitionService {
 
     CompetitionService(CompetitionRepository competitionRepository){
         this.competitionRepository = competitionRepository;
+    }
+
+    public List<Competition> getClosedCompetitions(){
+        List<Competition> allCompetitions = this.getAll();
+        List<Competition> onGoingCompetitions =this.getOnGoingCompetitions();
+        List<Competition> closedCompetitions = new ArrayList<>(allCompetitions);
+        closedCompetitions.removeAll(onGoingCompetitions);
+        return closedCompetitions;
+    }
+
+    public List<Competition> getOnGoingCompetitions(){
+        return this.competitionRepository.getOnGoingCompetitions(LocalDate.now(), LocalTime.now());
     }
 
     public List<Competition> getAll(){return this.competitionRepository.findAll();}

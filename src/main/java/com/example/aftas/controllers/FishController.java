@@ -3,8 +3,7 @@ package com.example.aftas.controllers;
 import com.example.aftas.dto.FishDto;
 import com.example.aftas.entities.Fish;
 import com.example.aftas.services.FishService;
-import com.example.aftas.services.LevelService;
-import lombok.Data;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +24,13 @@ public class FishController {
     public Fish find(@PathVariable Long id){return this.fishService.find(id);}
 
     @PostMapping("")
-    public Fish add(@RequestBody FishDto fishDto){
+    public Fish add(@Valid @RequestBody FishDto fishDto){
         Fish fish = modelMapper.map(fishDto, Fish.class);
         return this.fishService.save(fish, fishDto.getLevel_id());
     }
 
     @PutMapping("/{id}")
-    public Fish update(@PathVariable Long id, @RequestBody FishDto fishDto){
+    public Fish update(@PathVariable Long id,@Valid @RequestBody FishDto fishDto){
         Fish fish = modelMapper.map(fishDto, Fish.class);
         fish.setId(id);
         return this.fishService.save(fish, fishDto.getLevel_id());

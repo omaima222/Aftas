@@ -3,6 +3,7 @@ package com.example.aftas.controllers;
 import com.example.aftas.dto.RankingDto;
 import com.example.aftas.entities.Ranking;
 import com.example.aftas.services.RankingService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,13 +24,13 @@ public class RankingController {
     public Ranking find(@PathVariable Long id){return  this.rankingService.find(id);}
 
     @PostMapping("")
-    public Ranking save(@RequestBody RankingDto rankingDto){
+    public Ranking save(@Valid  @RequestBody RankingDto rankingDto){
         Ranking ranking = modelMapper.map(rankingDto, Ranking.class);
         return this.rankingService.save(ranking, rankingDto.getCompetition_id(), rankingDto.getMember_id());
     }
 
     @PutMapping("/{id}")
-    public Ranking update(@PathVariable Long id, @RequestBody RankingDto rankingDto){
+    public Ranking update(@PathVariable Long id,@Valid @RequestBody RankingDto rankingDto){
         Ranking ranking = modelMapper.map(rankingDto, Ranking.class);
         ranking.setId(id);
         return this.rankingService.save(ranking, rankingDto.getCompetition_id(), rankingDto.getMember_id());

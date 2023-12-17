@@ -1,11 +1,25 @@
 package com.example.aftas.dto;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
 public class LevelDto {
+    @NotNull
+    @Positive
     Integer code;
+
+    @NotNull
+    @Positive
     Integer points;
+
+
+    @NotNull
+    @NotEmpty
+    @NotBlank
     String description;
 }
