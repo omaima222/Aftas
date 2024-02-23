@@ -24,11 +24,9 @@ public class Competition {
     private String location;
     private Integer participantsNum;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "competition" , fetch = FetchType.LAZY)
     private List<Ranking> rankings;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "competition" , fetch = FetchType.LAZY)
     private List<Hunting> huntings;
 

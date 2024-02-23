@@ -1,5 +1,6 @@
-package com.example.aftas.dto;
+package com.example.aftas.dto.Fish;
 
+import com.example.aftas.dto.LevelDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -7,18 +8,16 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
-public class RankingDto {
+public class ResponseFishDto {
+    Long id;
+
+    @NotEmpty
     @NotNull
-    @Positive
-    Integer rank;
+    @NotBlank
+    String name;
 
     @NotNull
     @Positive
-    Integer score;
+    Integer avgWeight;
 
-    @NotNull
-    Long member_id;
-
-    @NotNull
-    Long competition_id;
 }

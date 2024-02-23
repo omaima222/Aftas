@@ -7,6 +7,8 @@ import java.time.LocalTime;
 
 @Data
 public class CompetitionDto {
+    Long id;
+
     @NotEmpty
     @NotNull
     @NotBlank

@@ -21,7 +21,6 @@ public class Fish {
     private String name;
     private Integer avgWeight;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "fish" , fetch = FetchType.LAZY)
     private List<Hunting> huntings;
 

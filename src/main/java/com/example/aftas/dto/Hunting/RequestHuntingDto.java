@@ -1,10 +1,11 @@
-package com.example.aftas.dto;
+package com.example.aftas.dto.Hunting;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
-public class HuntingDto {
+public class RequestHuntingDto {
+    Long id;
     @NotNull
     @Positive
     Integer fishNum;

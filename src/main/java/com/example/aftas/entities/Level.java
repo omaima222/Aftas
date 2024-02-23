@@ -1,5 +1,4 @@
 package com.example.aftas.entities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,8 +19,7 @@ public class Level {
     private Integer points;
     private String description;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "level" , fetch = FetchType.LAZY)
-    private List<Fish> fishs;
+    private List<Fish> fishes;
 
 }

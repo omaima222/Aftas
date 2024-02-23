@@ -1,46 +1,46 @@
 package com.example.aftas.controllers;
 
-import com.example.aftas.dto.HuntingDto;
+import com.example.aftas.dto.Hunting.RequestHuntingDto;
+import com.example.aftas.dto.Hunting.ResponseHuntingDto;
 import com.example.aftas.entities.Hunting;
-import com.example.aftas.entities.Level;
-import com.example.aftas.services.HuntingService;
+import com.example.aftas.services.HuntingServiceImp;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/hunting")
+@RequiredArgsConstructor
 public class HuntingController {
-    ModelMapper modelMapper = new ModelMapper();
-    HuntingService huntingService;
-
-    HuntingController(HuntingService huntingService){
-        this.huntingService=huntingService;
-    }
+    private final HuntingServiceImp huntingService;
 
     @GetMapping("")
-    public List<Hunting> getAll(){return this.huntingService.getAll();}
-
-    @GetMapping("/{id}")
-    public Hunting find(@PathVariable Long id){return  this.huntingService.find(id);}
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_JURY' ) and hasAuthority('CAN_MANAGE_HUNTING')")
+    public List<ResponseHuntingDto> getAll(){return this.huntingService.getAll();}
 
     @PostMapping("")
-    public Hunting save(@Valid @RequestBody HuntingDto huntingDto){
-        Hunting hunting = modelMapper.map(huntingDto, Hunting.class);
-        return this.huntingService.save(hunting, huntingDto.getCompetition_id(), huntingDto.getFish_id(), huntingDto.getMember_id());
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_JURY' ) and hasAuthority('CAN_MANAGE_HUNTING')")
+    public ResponseEntity<ResponseHuntingDto> add(@Valid @RequestBody RequestHuntingDto requestHuntingDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.huntingService.save(requestHuntingDto));
     }
 
     @PutMapping("/{id}")
-    public Hunting update(@PathVariable Long id,@Valid @RequestBody HuntingDto huntingDto){
-        Hunting hunting = modelMapper.map(huntingDto, Hunting.class);
-        hunting.setId(id);
-        return this.huntingService.save(hunting, huntingDto.getCompetition_id(), huntingDto.getFish_id(), huntingDto.getMember_id());
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_JURY' ) and hasAuthority('CAN_MANAGE_HUNTING')")
+    public ResponseEntity<ResponseHuntingDto> update(@PathVariable Long id,@Valid @RequestBody RequestHuntingDto requestHuntingDto){
+        requestHuntingDto.setId(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.huntingService.save(requestHuntingDto));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_JURY' ) and hasAuthority('CAN_MANAGE_HUNTING')")
+    public ResponseEntity<String> delete(@PathVariable Long id){
         this.huntingService.delete(id);
+        return ResponseEntity.ok("Hunting successfully deleted !");
     }
 }

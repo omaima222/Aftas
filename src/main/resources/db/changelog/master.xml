@@ -12,6 +12,11 @@
             </column>
             <column name="first_name" type="VARCHAR(255)"/>
             <column name="last_name" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="role_id" type="BIGINT"/>
+            <column name="identity_document" type="SMALLINT"/>
             <column name="nationality" type="VARCHAR(255)"/>
             <column name="identity_number" type="VARCHAR(255)"/>
             <column name="access_date" type="DATE"/>
@@ -73,27 +78,62 @@
         </createTable>
     </changeSet>
     <changeSet id="7" author="omaima">
+        <createTable tableName="role">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_demand"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="8" author="omaima">
+        <createTable tableName="permission">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_demand"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="9" author="omaima">
+        <createTable tableName="permission_role">
+            <column name="role_id" type="BIGINT"/>
+            <column name="permission_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="10" author="omaima">
         <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="ranking" constraintName="FK_RANKING_ON_MEMBER"
                                  referencedColumnNames="id" referencedTableName="member"/>
     </changeSet>
-    <changeSet id="8" author="omaima">
+    <changeSet id="11" author="omaima">
         <addForeignKeyConstraint baseColumnNames="competition_id" baseTableName="ranking" constraintName="FK_RANKING_ON_COMPETITION"
                                  referencedColumnNames="id" referencedTableName="competition"/>
     </changeSet>
-    <changeSet id="9" author="omaima">
+    <changeSet id="12" author="omaima">
         <addForeignKeyConstraint baseColumnNames="competition_id" baseTableName="hunting" constraintName="FK_HUNTING_ON_COMPETITION"
                                  referencedColumnNames="id" referencedTableName="competition"/>
     </changeSet>
-    <changeSet id="10" author="omaima">
+    <changeSet id="13" author="omaima">
         <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="hunting" constraintName="FK_HUNTING_ON_MEMBER"
                                  referencedColumnNames="id" referencedTableName="member"/>
     </changeSet>
-    <changeSet id="11" author="omaima">
+    <changeSet id="14" author="omaima">
         <addForeignKeyConstraint baseColumnNames="fish_id" baseTableName="hunting" constraintName="FK_HUNTING_ON_FISH"
                                  referencedColumnNames="id" referencedTableName="fish"/>
     </changeSet>
-    <changeSet id="12" author="omaima">
+    <changeSet id="15" author="omaima">
         <addForeignKeyConstraint baseColumnNames="level_id" baseTableName="fish" constraintName="FK_FISH_ON_LEVEL"
                                  referencedColumnNames="id" referencedTableName="level"/>
+    </changeSet>
+    <changeSet id="17" author="omaima">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="member" constraintName="FK_MEMBER_ON_ROLE"
+                                 referencedColumnNames="id" referencedTableName="role"/>
+    </changeSet>
+    <changeSet id="18" author="omaima">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="permission_role" constraintName="FK_PERMISSION_ROLE_ON_ROLE"
+                                 referencedColumnNames="id" referencedTableName="role"/>
+    </changeSet>
+    <changeSet id="19" author="omaima">
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="permission_role" constraintName="FK_PERMISSION_ROLE_ON_PERMISSION"
+                                 referencedColumnNames="id" referencedTableName="permission"/>
     </changeSet>
 </databaseChangeLog>

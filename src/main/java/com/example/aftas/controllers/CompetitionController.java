@@ -1,50 +1,57 @@
 package com.example.aftas.controllers;
 
 import com.example.aftas.dto.CompetitionDto;
-import com.example.aftas.entities.Competition;
-import com.example.aftas.services.CompetitionService;
+import com.example.aftas.services.CompetitionServiceImp;
+import com.example.aftas.services.interfaces.CompetitionService;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/competition")
+@AllArgsConstructor
 public class CompetitionController {
-    ModelMapper modelMapper = new ModelMapper();
 
-    CompetitionService competitionService;
-
-    CompetitionController(CompetitionService competitionService){this.competitionService=competitionService;}
+    private final CompetitionService competitionService;
 
     @GetMapping("")
-    public List<Competition> getAll(){return this.competitionService.getAll();}
+    public ResponseEntity<List<CompetitionDto>> getAll(){
+        return ResponseEntity.ok(this.competitionService.getAll());
+    }
 
     @GetMapping("/ongoing")
-    public List<Competition> getOnGoingCompetitions(){return this.competitionService.getOnGoingCompetitions();}
+    public ResponseEntity<List<CompetitionDto>> getOnGoingCompetitions(){
+        return ResponseEntity.ok(this.competitionService.getOnGoingCompetitions());
+    }
 
     @GetMapping("/closed")
-    public List<Competition> getClosedCompetitions(){return this.competitionService.getClosedCompetitions();}
-
-    @GetMapping("/{id}")
-    public Competition find(@PathVariable Long id){return this.competitionService.find(id);}
+    public ResponseEntity<List<CompetitionDto>> getClosedCompetitions(){
+        return ResponseEntity.ok(this.competitionService.getClosedCompetitions());
+    }
 
     @PostMapping("")
-    public Competition add(@Valid @RequestBody CompetitionDto competitionDto){
-        Competition competition = modelMapper.map(competitionDto, Competition.class);
-        return this.competitionService.save(competition);
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_JURY' ) and hasAuthority('CAN_MANAGE_COMPETITION')")
+    public ResponseEntity<CompetitionDto> add(@Valid @RequestBody CompetitionDto competitionDto){
+         return ResponseEntity.status(HttpStatus.CREATED).body(this.competitionService.save(competitionDto));
     }
 
     @PutMapping("/{id}")
-    public Competition update(@PathVariable Long id,@Valid @RequestBody CompetitionDto competitionDto){
-        Competition competition = modelMapper.map(competitionDto, Competition.class);
-        competition.setId(id);
-        return this.competitionService.save(competition);
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_JURY' ) and hasAuthority('CAN_MANAGE_COMPETITION')")
+    public ResponseEntity<CompetitionDto> update(@PathVariable Long id,@Valid @RequestBody CompetitionDto competitionDto){
+        competitionDto.setId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(this.competitionService.save(competitionDto));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){this.competitionService.delete(id);}
-
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_JURY' ) and hasAuthority('CAN_MANAGE_COMPETITION')")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        this.competitionService.delete(id);
+        return ResponseEntity.ok("Competition successfully deleted !");
+    }
 
 }
